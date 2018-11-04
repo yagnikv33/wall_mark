@@ -1,6 +1,6 @@
 package com.wallmark;
 
-public class UrlDetails {
+public class  UrlDetails {
     private String url,id,name;
 
     public UrlDetails() {

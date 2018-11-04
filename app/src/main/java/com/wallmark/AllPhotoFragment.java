@@ -96,7 +96,7 @@ public class AllPhotoFragment extends Fragment{
                                 String id = array.getJSONObject(i).getString("id");
                                 String secret = array.getJSONObject(i).getString("secret");
                                 String name = array.getJSONObject(i).getString("title");
-                                String url = "http://farm"+farm+".staticflickr.com/"+server+"/"+id+"_"+secret+".jpg";
+                                String url = "http://farm"+farm+".staticflickr.com/"+server+"/"+id+"_"+secret+"_b.jpg";
                                 seriesList.add(new UrlDetails(url,id,name));
                                 myViewHolder.notifyDataSetChanged();
                                 check = true;
