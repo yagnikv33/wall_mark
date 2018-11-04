@@ -9,13 +9,11 @@ import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.Volley;
-import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -51,9 +49,6 @@ public class  AllPhotoRecyclerViewHolder extends RecyclerView.Adapter<AllPhotoRe
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
         final String name = myLists.get(i).getName();
-        /*Glide.with(context)
-                .load(myLists.get(i).getUrl())
-                .into(viewHolder.imageView);*/
         requestQueue = Volley.newRequestQueue(context);
         imageLoader = new ImageLoader(requestQueue, new ImageLoader.ImageCache() {
             private final LruCache<String, Bitmap> mCache = new LruCache<String, Bitmap>(10);
