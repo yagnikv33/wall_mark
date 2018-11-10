@@ -1,6 +1,9 @@
 package com.wallmark;
 
 
+import android.app.DownloadManager;
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -9,9 +12,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.GsonBuilder;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
@@ -19,10 +30,10 @@ import com.bumptech.glide.Glide;
  */
 public class ShowImageFragment extends Fragment {
 
-    ProgressBar progressBar;
     FloatingActionButton fab;
-    String downloadUrl;
     ImageView imageView;
+    List<Size> photo;
+    private DownloadManager downloadmanager;
     public ShowImageFragment() {
         // Required empty public constructor
     }
@@ -34,6 +45,10 @@ public class ShowImageFragment extends Fragment {
 
         View view  = inflater.inflate(R.layout.show_image_fragment, container, false);
         fab = view.findViewById(R.id.download_button);
+
+
+
+        downloadmanager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
         assert getArguments() != null;
         final String url = getArguments().getString("url");
         final String id = getArguments().getString("id");
@@ -48,66 +63,44 @@ public class ShowImageFragment extends Fragment {
                 fab.setScaleX(0);
                 fab.setScaleY(0);
                 fab.animate().scaleX(1).scaleY(1).start();
-                //downloadImage(id,name);
+                downloadImage(id,name);
             }
         });
         return view;
     }
 
     void downloadImage(String id, final String name){
-        /*requestQueue = Volley.newRequestQueue(getActivity());
-        stringRequest = new StringRequest(
-                Request.Method.GET,
-                MyUtil.PHOTO_GETSIZE_URL + id,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject object = new JSONObject(response);
-                            JSONArray array = object.getJSONObject("sizes").getJSONArray("size");
-                            JSONObject obj = array.getJSONObject(array.length()-1);
-                            downloadUrl = obj.getString("source");
-                            imageRequest = new ImageRequest(
-                                    downloadUrl,
-                                    new Response.Listener<Bitmap>() {
-                                        @Override
-                                        public void onResponse(Bitmap response) {
-                                            try {
-                                                Log.i("download1", String.valueOf(response));
-                                                FileOutputStream fos = new FileOutputStream(Environment.getExternalStorageDirectory()+"/Wall Mark/"+name+".jpg");
-                                                response.compress(Bitmap.CompressFormat.JPEG,100,fos);
-                                                fos.flush();
-                                                Toast.makeText(getActivity(), "Download Completed!", Toast.LENGTH_SHORT).show();
-                                                response.recycle();
-                                            }catch (Exception e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    },
-                                    0,
-                                    0,
-                                    ImageView.ScaleType.FIT_XY,
-                                    Bitmap.Config.RGB_565,
-                                    new Response.ErrorListener() {
-                                        @Override
-                                        public void onErrorResponse(VolleyError error) {
-                                            Toast.makeText(getActivity(), "Download Failed Please try again!", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                            );
-                            requestQueue.add(imageRequest);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(),"Something Wrong Please try again!"+error, Toast.LENGTH_SHORT).show();
-                    }
-                }
-        );
-        requestQueue.add(stringRequest);*/
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.flickr.com/services/")
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
+                .build();
+
+        RetroApi retroApi = retrofit.create(RetroApi.class);
+
+        Call<PhotoSize> call = retroApi.getPhotoSize(id);
+
+        call.enqueue(new Callback<PhotoSize>() {
+            @Override
+            public void onResponse(Call<PhotoSize> call, Response<PhotoSize> response) {
+                photo = response.body().getSizes().getSize();
+                Uri download_uri = Uri.parse(photo.get(photo.size()-1).getSource());
+                DownloadManager.Request request = new DownloadManager.Request(download_uri);
+                request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
+                request.setAllowedOverRoaming(false);
+                request.setTitle(name);
+                request.setDescription(name +".jpg");
+                request.setVisibleInDownloadsUi(true);
+                request.setDestinationInExternalPublicDir("Wall Mark",  name + ".jpg");
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                downloadmanager.enqueue(request);
+            }
+
+            @Override
+            public void onFailure(Call<PhotoSize> call, Throwable t) {
+
+            }
+        });
+
     }
+
 }

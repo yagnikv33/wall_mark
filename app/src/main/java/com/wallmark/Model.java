@@ -739,3 +739,149 @@ class CategoryPhotosetDetails {
     }
 
 }
+class PhotoSize {
+
+    @SerializedName("sizes")
+    @Expose
+    private Sizes sizes;
+    @SerializedName("stat")
+    @Expose
+    private String stat;
+
+    public Sizes getSizes() {
+        return sizes;
+    }
+
+    public void setSizes(Sizes sizes) {
+        this.sizes = sizes;
+    }
+
+    public String getStat() {
+        return stat;
+    }
+
+    public void setStat(String stat) {
+        this.stat = stat;
+    }
+
+}
+
+class Size {
+
+    @SerializedName("label")
+    @Expose
+    private String label;
+    @SerializedName("width")
+    @Expose
+    private String width;
+    @SerializedName("height")
+    @Expose
+    private String height;
+    @SerializedName("source")
+    @Expose
+    private String source;
+    @SerializedName("url")
+    @Expose
+    private String url;
+    @SerializedName("media")
+    @Expose
+    private String media;
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public String getWidth() {
+        return width;
+    }
+
+    public void setWidth(String width) {
+        this.width = width;
+    }
+
+    public String getHeight() {
+        return height;
+    }
+
+    public void setHeight(String height) {
+        this.height = height;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getMedia() {
+        return media;
+    }
+
+    public void setMedia(String media) {
+        this.media = media;
+    }
+
+}
+
+class Sizes {
+
+    @SerializedName("canblog")
+    @Expose
+    private Integer canblog;
+    @SerializedName("canprint")
+    @Expose
+    private Integer canprint;
+    @SerializedName("candownload")
+    @Expose
+    private Integer candownload;
+    @SerializedName("size")
+    @Expose
+    private List<Size> size = null;
+
+    public Integer getCanblog() {
+        return canblog;
+    }
+
+    public void setCanblog(Integer canblog) {
+        this.canblog = canblog;
+    }
+
+    public Integer getCanprint() {
+        return canprint;
+    }
+
+    public void setCanprint(Integer canprint) {
+        this.canprint = canprint;
+    }
+
+    public Integer getCandownload() {
+        return candownload;
+    }
+
+    public void setCandownload(Integer candownload) {
+        this.candownload = candownload;
+    }
+
+    public List<Size> getSize() {
+        return size;
+    }
+
+    public void setSize(List<Size> size) {
+        this.size = size;
+    }
+
+}

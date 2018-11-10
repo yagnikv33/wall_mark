@@ -57,16 +57,18 @@ public class AllPhotoFragment extends Fragment{
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(myViewHolder);
 
+        swipeRefreshLayout.setEnabled(false);
         prepareForData();
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if(check) {
                     myViewHolder.clear();
+                    swipeRefreshLayout.setEnabled(false);
                     prepareForData();
                     myViewHolder.addAll(seriesList);
                     swipeRefreshLayout.setRefreshing(false);
-                }
+
             }
         });
         return view;
@@ -96,9 +98,8 @@ public class AllPhotoFragment extends Fragment{
                     String url = "http://farm"+farm+".staticflickr.com/"+server+"/"+id+"_"+secret+"_b.jpg";
                     seriesList.add(new UrlDetails(url,id,name));
                     myViewHolder.notifyDataSetChanged();
-                    check = true;
                 }
-
+                swipeRefreshLayout.setEnabled(true);
             }
             @Override
             public void onFailure(Call<Model> call, Throwable t) {

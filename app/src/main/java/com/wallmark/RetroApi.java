@@ -3,6 +3,7 @@ package com.wallmark;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 public interface RetroApi {
 
@@ -35,4 +36,11 @@ public interface RetroApi {
 
     @GET(PHOTOSET_PHOTO_URL)
     Call<CategoryPhoto> getCategotyPhotos(@Query("photoset_id") String id);
+
+    @GET(PHOTO_GETSIZE_URL)
+    Call<PhotoSize> getPhotoSize(@Query("photo_id") String id);
+
+    @GET
+    Call<String> downloadPhoto(@Url String url);
+
 }

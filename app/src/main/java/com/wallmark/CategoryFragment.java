@@ -56,13 +56,14 @@ public class CategoryFragment extends Fragment {
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(myViewHolder);
-
+        swipeRefreshLayout.setEnabled(false);
         prepareForData();
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 myViewHolder.clear();
+                swipeRefreshLayout.setEnabled(false);
                 prepareForData();
                 myViewHolder.addAll(seriesList);
                 swipeRefreshLayout.setRefreshing(false);
@@ -95,8 +96,8 @@ public class CategoryFragment extends Fragment {
                     String url = "http://farm"+farm+".staticflickr.com/"+server+"/"+primary+"_"+secret+".jpg";
                     seriesList.add(new UrlDetails(url,id,name));
                     myViewHolder.notifyDataSetChanged();
-
                 }
+                swipeRefreshLayout.setEnabled(true);
             }
 
             @Override
