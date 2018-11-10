@@ -11,9 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.ImageRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 
 
@@ -24,9 +21,6 @@ public class ShowImageFragment extends Fragment {
 
     ProgressBar progressBar;
     FloatingActionButton fab;
-    RequestQueue requestQueue;
-    StringRequest stringRequest;
-    ImageRequest imageRequest;
     String downloadUrl;
     ImageView imageView;
     public ShowImageFragment() {
