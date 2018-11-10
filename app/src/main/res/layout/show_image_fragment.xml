@@ -7,7 +7,7 @@
     tools:context=".ShowImageFragment">
 
 
-    <com.android.volley.toolbox.NetworkImageView
+    <ImageView
         android:id="@+id/showImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

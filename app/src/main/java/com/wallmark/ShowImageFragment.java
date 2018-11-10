@@ -1,36 +1,20 @@
 package com.wallmark;
 
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageRequest;
-import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.FileOutputStream;
+import com.bumptech.glide.Glide;
 
 
 /**
@@ -43,9 +27,8 @@ public class ShowImageFragment extends Fragment {
     RequestQueue requestQueue;
     StringRequest stringRequest;
     ImageRequest imageRequest;
-    ImageLoader imageLoader;
     String downloadUrl;
-    NetworkImageView networkImageView;
+    ImageView imageView;
     public ShowImageFragment() {
         // Required empty public constructor
     }
@@ -56,16 +39,15 @@ public class ShowImageFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View view  = inflater.inflate(R.layout.show_image_fragment, container, false);
-        networkImageView = view.findViewById(R.id.showImageView);
         fab = view.findViewById(R.id.download_button);
-        progressBar = view.findViewById(R.id.progress_horizontal);
         assert getArguments() != null;
         final String url = getArguments().getString("url");
         final String id = getArguments().getString("id");
         final String name = getArguments().getString("name");
-        /*Glide.with(getActivity())
+        imageView = view.findViewById(R.id.showImageView);
+        Glide.with(getActivity())
                 .load(url)
-                .into(imageView);*/
+                .into(imageView);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,25 +57,11 @@ public class ShowImageFragment extends Fragment {
                 //downloadImage(id,name);
             }
         });
-        requestQueue = Volley.newRequestQueue(getActivity());
-        imageLoader = new ImageLoader(requestQueue, new ImageLoader.ImageCache() {
-            private final LruCache<String, Bitmap> mCache = new LruCache<String, Bitmap>(10);
-            @Override
-            public Bitmap getBitmap(String url) {
-                return mCache.get(url);
-            }
-
-            @Override
-            public void putBitmap(String url, Bitmap bitmap) {
-                mCache.put(url,bitmap);
-            }
-        });
-        networkImageView.setImageUrl(url,imageLoader);
         return view;
     }
 
     void downloadImage(String id, final String name){
-        requestQueue = Volley.newRequestQueue(getActivity());
+        /*requestQueue = Volley.newRequestQueue(getActivity());
         stringRequest = new StringRequest(
                 Request.Method.GET,
                 MyUtil.PHOTO_GETSIZE_URL + id,
@@ -146,6 +114,6 @@ public class ShowImageFragment extends Fragment {
                     }
                 }
         );
-        requestQueue.add(stringRequest);
+        requestQueue.add(stringRequest);*/
     }
 }

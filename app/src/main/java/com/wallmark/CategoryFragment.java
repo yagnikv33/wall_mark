@@ -13,19 +13,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
@@ -36,8 +32,7 @@ public class CategoryFragment extends Fragment {
     private CategoryRecyclerViewHolder myViewHolder;
     private List<UrlDetails> seriesList;
     Context context;
-    RequestQueue requestQueue;
-    StringRequest stringRequest;
+    List<Photoset> photo;
     SwipeRefreshLayout swipeRefreshLayout;
     public CategoryFragment() {
         // Required empty public constructor
@@ -77,45 +72,40 @@ public class CategoryFragment extends Fragment {
     }
 
     private void prepareForData() {
-        requestQueue = Volley.newRequestQueue(getActivity());
-        stringRequest = new StringRequest(
-                Request.Method.GET,
-                MyUtil.PHOTOSET_LIST_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        JSONObject obj;
-                        try {
-                            obj = new JSONObject(response);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.flickr.com/services/")
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
+                .build();
 
-                            JSONArray array = obj.getJSONObject("photosets").getJSONArray("photoset");
+        RetroApi retroApi = retrofit.create(RetroApi.class);
 
-                            for(int i=0; i<=array.length(); i++){
-                                String id = array.getJSONObject(i).getString("id");
-                                String farm = array.getJSONObject(i).getString("farm");
-                                String server = array.getJSONObject(i).getString("server");
-                                String primary = array.getJSONObject(i).getString("primary");
-                                String secret = array.getJSONObject(i).getString("secret");
-                                String name = array.getJSONObject(i).getJSONObject("title").getString("_content");
-                                String url = "http://farm"+farm+".staticflickr.com/"+server+"/"+primary+"_"+secret+".jpg";
-                                seriesList.add(new UrlDetails(url,id,name));
-                                myViewHolder.notifyDataSetChanged();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+        Call<Category> call = retroApi.getCategoryList();
 
+        call.enqueue(new Callback<Category>() {
+            @Override
+            public void onResponse(Call<Category> call, retrofit2.Response<Category> response) {
+                photo = response.body().getPhotosets().getPhotoset();
+                for(int i =0;i<photo.size(); i++){
+                    int farm = photo.get(0).getFarm();
+                    String server = photo.get(i).getServer();
+                    String primary = photo.get(i).getPrimary();
+                    String secret = photo.get(i).getSecret();
+                    String id = photo.get(i).getId();
+                    String name = photo.get(i).getTitle().getContent();
+                    String url = "http://farm"+farm+".staticflickr.com/"+server+"/"+primary+"_"+secret+".jpg";
+                    seriesList.add(new UrlDetails(url,id,name));
+                    myViewHolder.notifyDataSetChanged();
 
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
                 }
-        );
-        requestQueue.add(stringRequest);
+            }
+
+            @Override
+            public void onFailure(Call<Category> call, Throwable t) {
+
+            }
+        });
+
+
 
     }
 

@@ -10,12 +10,12 @@
     style="@style/Widget.MaterialComponents.CardView">
 
 
-    <com.android.volley.toolbox.NetworkImageView
+    <ImageView
         android:id="@+id/rImage"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:adjustViewBounds="true"
-        android:background="@color/colorPrimary"
+        android:background="#fff"
         android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

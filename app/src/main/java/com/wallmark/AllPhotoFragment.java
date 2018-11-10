@@ -11,20 +11,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
@@ -35,9 +32,8 @@ public class AllPhotoFragment extends Fragment{
     private AllPhotoRecyclerViewHolder myViewHolder;
     private List<UrlDetails> seriesList;
     SwipeRefreshLayout swipeRefreshLayout;
-    RequestQueue requestQueue;
-    StringRequest stringRequest;
     boolean check = false;
+    List<Photo> photo;
 
     public AllPhotoFragment() {
         // Required empty public constructor
@@ -52,7 +48,7 @@ public class AllPhotoFragment extends Fragment{
         RecyclerView recyclerView = view.findViewById(R.id.all_photo_recyclerView);
         recyclerView.setHasFixedSize(true);
         seriesList = new ArrayList<>();
-        myViewHolder = new AllPhotoRecyclerViewHolder(seriesList,getActivity(),MyUtil.ALL_PHOTO_URL);
+        myViewHolder = new AllPhotoRecyclerViewHolder(seriesList,getActivity(),"ALL_PHOTO");
 
         swipeRefreshLayout = view.findViewById(R.id.swipeRefresh);
 
@@ -76,46 +72,38 @@ public class AllPhotoFragment extends Fragment{
         return view;
     }
 
-
     private void prepareForData() {
-        requestQueue = Volley.newRequestQueue(getActivity());
-        stringRequest = new StringRequest(
-                Request.Method.GET,
-                MyUtil.ALL_PHOTO_URL,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        JSONObject obj;
-                        try {
-                            obj = new JSONObject(response);
-                            JSONArray array = obj.getJSONObject("photos").getJSONArray("photo");
 
-                            for(int i=0; i<=array.length(); i++){
-                                String farm = array.getJSONObject(i).getString("farm");
-                                String server = array.getJSONObject(i).getString("server");
-                                String id = array.getJSONObject(i).getString("id");
-                                String secret = array.getJSONObject(i).getString("secret");
-                                String name = array.getJSONObject(i).getString("title");
-                                String url = "http://farm"+farm+".staticflickr.com/"+server+"/"+id+"_"+secret+"_b.jpg";
-                                seriesList.add(new UrlDetails(url,id,name));
-                                myViewHolder.notifyDataSetChanged();
-                                check = true;
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.flickr.com/services/")
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
+                .build();
 
+        RetroApi retroApi = retrofit.create(RetroApi.class);
 
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+        Call<Model> call = retroApi.getSerch();
 
-                    }
+        call.enqueue(new Callback<Model>() {
+            @Override
+            public void onResponse(Call<Model> call, retrofit2.Response<Model> response) {
+                photo = response.body().getPhotos().getPhoto();
+                for(int i=0; i < photo.size(); i++){
+                    int farm = photo.get(i).getFarm();
+                    String server = photo.get(i).getServer();
+                    String id = photo.get(i).getId();
+                    String secret = photo.get(i).getSecret();
+                    String name = photo.get(i).getTitle();
+                    String url = "http://farm"+farm+".staticflickr.com/"+server+"/"+id+"_"+secret+"_b.jpg";
+                    seriesList.add(new UrlDetails(url,id,name));
+                    myViewHolder.notifyDataSetChanged();
+                    check = true;
                 }
-        );
-        requestQueue.add(stringRequest);
 
+            }
+            @Override
+            public void onFailure(Call<Model> call, Throwable t) {
+                Toast.makeText(getActivity(), "Some thing Wrong! Try Again", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

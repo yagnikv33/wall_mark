@@ -4,30 +4,34 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class ShowImageAcitivity extends AppCompatActivity {
 
     List<UrlDetails> list;
-    RequestQueue requestQueue;
-    StringRequest stringRequest;
     ShowImageViewPagerAdapter adapter;
-    String name,frame,pos;
+    String name,frame,pos,id;
     ViewPager viewPager;
+    List<Photo> photo;
+    Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl("https://api.flickr.com/services/")
+            .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
+            .build();
+
+    RetroApi retroApi = retrofit.create(RetroApi.class);
+
+    Call<Model> call = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,52 +41,79 @@ public class ShowImageAcitivity extends AppCompatActivity {
         name = intent.getStringExtra("name");
         frame = intent.getStringExtra("frame");
         pos = intent.getStringExtra("pos");
+        id = intent.getStringExtra("id");
 
-        list = new ArrayList<>();
+
         viewPager = findViewById(R.id.showImageViewPager);
+        list = new ArrayList<>();
         adapter = new ShowImageViewPagerAdapter(getSupportFragmentManager(),list);
         viewPager.setAdapter(adapter);
         prepareForData();
     }
 
     private void prepareForData() {
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
-        stringRequest = new StringRequest(
-                Request.Method.GET,
-                frame,
-                new Response.Listener<String>() {
+        switch (frame){
+            case "ALL_PHOTO":
+                call = retroApi.getSerch();
+                getAllPhotos();
+                break;
+
+            case "POPULAR_PHOTO":
+                call = retroApi.getPopular();
+                getAllPhotos();
+                break;
+
+            case "CATEGORY_PHOTO":
+                Call<CategoryPhoto> cateCall = retroApi.getCategotyPhotos(id);
+                cateCall.enqueue(new Callback<CategoryPhoto>() {
                     @Override
-                    public void onResponse(String response) {
-                        JSONObject obj;
-                        try {
-                            obj = new JSONObject(response);
-                            JSONArray array = obj.getJSONObject("photos").getJSONArray("photo");
-
-                            for(int i=0; i<=array.length(); i++){
-                                String farm = array.getJSONObject(i).getString("farm");
-                                String server = array.getJSONObject(i).getString("server");
-                                String id = array.getJSONObject(i).getString("id");
-                                String secret = array.getJSONObject(i).getString("secret");
-                                String name = array.getJSONObject(i).getString("title");
-                                String url = "http://farm"+farm+".staticflickr.com/"+server+"/"+id+"_"+secret+".jpg";
-                                list.add(new UrlDetails(url,id,name));
-                                adapter.notifyDataSetChanged();
-                                viewPager.setCurrentItem(Integer.parseInt(pos));
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                    public void onResponse(Call<CategoryPhoto> call, Response<CategoryPhoto> response) {
+                        List<CategoryPhotoDetails> photo = response.body().getCategoryPhotoDetails().getPhoto();
+                        for(int i=0; i < photo.size(); i++){
+                            int farm = photo.get(i).getFarm();
+                            String server = photo.get(i).getServer();
+                            String id = photo.get(i).getId();
+                            String secret = photo.get(i).getSecret();
+                            String name = photo.get(i).getTitle();
+                            String url = "http://farm"+farm+".staticflickr.com/"+server+"/"+id+"_"+secret+"_b.jpg";
+                            list.add(new UrlDetails(url,id,name));
+                            adapter.notifyDataSetChanged();
+                            viewPager.setCurrentItem(Integer.parseInt(pos));
                         }
                     }
-                },
-                new Response.ErrorListener() {
+
                     @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i("Flickr", String.valueOf(error));
+                    public void onFailure(Call<CategoryPhoto> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), "Some thing Wrong! Try Again", Toast.LENGTH_SHORT).show();
                     }
+                });
+                break;
+        }
+    }
+
+    private void getAllPhotos() {
+        call.enqueue(new Callback<Model>() {
+            @Override
+            public void onResponse(Call<Model> call, retrofit2.Response<Model> response) {
+                photo = response.body().getPhotos().getPhoto();
+                for(int i=0; i < photo.size(); i++){
+                    int farm = photo.get(i).getFarm();
+                    String server = photo.get(i).getServer();
+                    String id = photo.get(i).getId();
+                    String secret = photo.get(i).getSecret();
+                    String name = photo.get(i).getTitle();
+                    String url = "http://farm"+farm+".staticflickr.com/"+server+"/"+id+"_"+secret+"_b.jpg";
+                    list.add(new UrlDetails(url,id,name));
+                    adapter.notifyDataSetChanged();
+                    viewPager.setCurrentItem(Integer.parseInt(pos));
                 }
-        );
-        requestQueue.add(stringRequest);
+
+            }
+            @Override
+            public void onFailure(Call<Model> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Some thing Wrong! Try Again", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

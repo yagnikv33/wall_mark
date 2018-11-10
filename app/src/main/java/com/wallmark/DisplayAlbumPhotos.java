@@ -7,28 +7,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DisplayAlbumPhotos extends AppCompatActivity {
 
     private AllPhotoRecyclerViewHolder myViewHolder;
     private List<UrlDetails> seriesList;
-    RequestQueue requestQueue;
-    StringRequest stringRequest;
     SwipeRefreshLayout swipeRefreshLayout;
+    List<CategoryPhotoDetails> photo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +34,7 @@ public class DisplayAlbumPhotos extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.album_recyclerView);
         recyclerView.setHasFixedSize(true);
         seriesList = new ArrayList<>();
-        myViewHolder = new AllPhotoRecyclerViewHolder(seriesList,getApplicationContext(),MyUtil.PHOTOSET_PHOTO_URL + id);
+        myViewHolder = new AllPhotoRecyclerViewHolder(seriesList,getApplicationContext(),"CATEGORY_PHOTO");
 
         swipeRefreshLayout = findViewById(R.id.albumPhotoSwipe);
 
@@ -61,43 +57,38 @@ public class DisplayAlbumPhotos extends AppCompatActivity {
 
     }
 
-    private void prepareForData(String id) {
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
-        stringRequest = new StringRequest(
-                Request.Method.GET,
-                MyUtil.PHOTOSET_PHOTO_URL + id,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        JSONObject obj;
-                        try {
-                            obj = new JSONObject(response);
-                            JSONArray array = obj.getJSONObject("photoset").getJSONArray("photo");
+    private void prepareForData(final String id) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.flickr.com/services/")
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
+                .build();
 
-                            for(int i=0; i<=array.length(); i++){
-                                String farm = array.getJSONObject(i).getString("farm");
-                                String server = array.getJSONObject(i).getString("server");
-                                String id = array.getJSONObject(i).getString("id");
-                                String secret = array.getJSONObject(i).getString("secret");
-                                String name = array.getJSONObject(i).getString("title");
-                                String url = "http://farm"+farm+".staticflickr.com/"+server+"/"+id+"_"+secret+"_b.jpg";
-                                seriesList.add(new UrlDetails(url,id,name));
-                                myViewHolder.notifyDataSetChanged();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+        RetroApi retroApi = retrofit.create(RetroApi.class);
 
+        Call<CategoryPhoto> call = retroApi.getCategotyPhotos(id);
 
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
+        call.enqueue(new Callback<CategoryPhoto>() {
+            @Override
+            public void onResponse(Call<CategoryPhoto> call, retrofit2.Response<CategoryPhoto> response) {
+                photo = response.body().getCategoryPhotoDetails().getPhoto();
+                photo = response.body().getCategoryPhotoDetails().getPhoto();
+                for(int i=0; i < photo.size(); i++){
+                    int farm = photo.get(i).getFarm();
+                    String server = photo.get(i).getServer();
+                    String photo_id = photo.get(i).getId();
+                    String secret = photo.get(i).getSecret();
+                    String name = photo.get(i).getTitle();
+                    String url = "http://farm"+farm+".staticflickr.com/"+server+"/"+photo_id+"_"+secret+"_b.jpg";
+                    seriesList.add(new UrlDetails(url,id,name));
+                    myViewHolder.notifyDataSetChanged();
                 }
-        );
-        requestQueue.add(stringRequest);
+            }
+
+            @Override
+            public void onFailure(Call<CategoryPhoto> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Some thing Wrong! Try Again", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 }
