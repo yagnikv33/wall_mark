@@ -9,9 +9,13 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.GsonBuilder;
@@ -30,12 +34,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class ShowImageFragment extends Fragment {
 
-    FloatingActionButton fab;
+    //FloatingActionButton fab;
     ImageView imageView;
     List<Size> photo;
     private DownloadManager downloadmanager;
+    int flag;
+    TextView dowanload,title;
     public ShowImageFragment() {
-        // Required empty public constructor
+        // Required empty
+        // public constructor
     }
 
     @Override
@@ -43,8 +50,8 @@ public class ShowImageFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View view  = inflater.inflate(R.layout.show_image_fragment, container, false);
-        fab = view.findViewById(R.id.download_button);
+        final View view  = inflater.inflate(R.layout.show_image_fragment, container, false);
+        //fab = view.findViewById(R.id.download_button);
 
 
 
@@ -54,16 +61,37 @@ public class ShowImageFragment extends Fragment {
         final String id = getArguments().getString("id");
         final String name = getArguments().getString("name");
         imageView = view.findViewById(R.id.showImageView);
+        dowanload = view.findViewById(R.id.download);
+        title = view.findViewById(R.id.image_title);
         Glide.with(getActivity())
                 .load(url)
                 .into(imageView);
-        fab.setOnClickListener(new View.OnClickListener() {
+        title.setText(name);
+        dowanload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fab.setScaleX(0);
-                fab.setScaleY(0);
-                fab.animate().scaleX(1).scaleY(1).start();
+                dowanload.setScaleX(0);
+                dowanload.setScaleY(0);
+                dowanload.animate().scaleX(1).scaleY(1).start();
                 downloadImage(id,name);
+            }
+        });
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(flag == 1){
+                    view.findViewById(R.id.titleLayout).setVisibility(View.VISIBLE);
+                    view.findViewById(R.id.buttonLayout).setVisibility(View.VISIBLE);
+                    getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                    flag = 0;
+                }
+                else{
+                    view.findViewById(R.id.titleLayout).setVisibility(View.GONE);
+                    view.findViewById(R.id.buttonLayout).setVisibility(View.GONE);
+                    getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                    flag = 1;
+                }
+                imageView.setClickable(true);
             }
         });
         return view;
