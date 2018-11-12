@@ -14,6 +14,9 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class CategoryRecyclerViewHolder extends RecyclerView.Adapter<CategoryRecyclerViewHolder.ViewHolder> {
     private List<UrlDetails> myLists;
     public Context context;
@@ -61,12 +64,15 @@ public class CategoryRecyclerViewHolder extends RecyclerView.Adapter<CategoryRec
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.categoryImage)
         ImageView imageView;
+
+        @BindView(R.id.categoryName)
         TextView textView;
+
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.categoryImage);
-            textView = itemView.findViewById(R.id.categoryName);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

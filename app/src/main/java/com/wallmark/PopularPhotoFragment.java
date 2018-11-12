@@ -18,6 +18,8 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -29,10 +31,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class PopularPhotoFragment extends Fragment {
 
+    @BindView(R.id.popular_photo_recyclerView)
+    RecyclerView recyclerView;
+
+    @BindView(R.id.popularPhotoSwipe)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     private AllPhotoRecyclerViewHolder myViewHolder;
     private List<UrlDetails> seriesList;
-    SwipeRefreshLayout swipeRefreshLayout;
+
     List<Photo> photo;
     public PopularPhotoFragment() {
         // Required empty public constructor
@@ -44,14 +51,11 @@ public class PopularPhotoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_popular_photo, container, false);
-        RecyclerView recyclerView = view.findViewById(R.id.popular_photo_recyclerView);
-
+        ButterKnife.bind(this,view);
 
         recyclerView.setHasFixedSize(true);
         seriesList = new ArrayList<>();
         myViewHolder = new AllPhotoRecyclerViewHolder(seriesList,getActivity(),"POPULAR_PHOTO");
-
-        swipeRefreshLayout = view.findViewById(R.id.popularPhotoSwipe);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),3);
         recyclerView.setLayoutManager(gridLayoutManager);

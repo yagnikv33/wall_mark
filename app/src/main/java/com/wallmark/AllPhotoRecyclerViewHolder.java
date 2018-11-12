@@ -13,6 +13,9 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class  AllPhotoRecyclerViewHolder extends RecyclerView.Adapter<AllPhotoRecyclerViewHolder.ViewHolder> {
     private List<UrlDetails> myLists;
     public Context context;
@@ -64,10 +67,11 @@ public class  AllPhotoRecyclerViewHolder extends RecyclerView.Adapter<AllPhotoRe
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.rImage)
         ImageView imageView;
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.rImage);
+            ButterKnife.bind(this,itemView);
         }
     }
 }

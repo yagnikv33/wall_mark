@@ -6,27 +6,32 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.io.File;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class MainActivity extends AppCompatActivity {
 
 
+    @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
+
+    @BindView(R.id.pager)
+    ViewPager viewPager;
+
+    @BindView(R.id.toolbar)
+    android.support.v7.widget.Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ViewPager viewPager = findViewById(R.id.pager);
-
-        drawerLayout = findViewById(R.id.drawer_layout);
-
-        android.support.v7.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());

@@ -18,10 +18,9 @@ public interface RetroApi {
     String PHOTO_GETSIZE_METHOD = "flickr.photos.getSizes";
 
 
-
     String ALL_PHOTO_URL = "rest/?method="+SEARCH_METHOD+"&api_key="+API_KEY+"&user_id="+USER_ID+"&format="+FORMAT+"&nojsoncallback="+NOJSONCALLBACK+"";
-    String PHOTOSET_PHOTO_URL = "https://api.flickr.com/services/rest/?method="+PHOTOSET_PHOTO_METHOD+"&api_key="+API_KEY+"&user_id="+USER_ID+"&format="+FORMAT+"&nojsoncallback="+NOJSONCALLBACK+"&photoset_id=";
-    String PHOTO_GETSIZE_URL = "https://api.flickr.com/services/rest/?method="+PHOTO_GETSIZE_METHOD+"&api_key="+API_KEY+"&user_id="+USER_ID+"&format="+FORMAT+"&nojsoncallback="+NOJSONCALLBACK+"&photo_id=";
+    String PHOTOSET_PHOTO_URL = "rest/?method="+PHOTOSET_PHOTO_METHOD+"&api_key="+API_KEY+"&user_id="+USER_ID+"&format="+FORMAT+"&nojsoncallback="+NOJSONCALLBACK+"&photoset_id=";
+    String PHOTO_GETSIZE_URL = "rest/?method="+PHOTO_GETSIZE_METHOD+"&api_key="+API_KEY+"&user_id="+USER_ID+"&format="+FORMAT+"&nojsoncallback="+NOJSONCALLBACK+"&photo_id=";
     String PHOTOSET_LIST_URL = "rest/?method="+PHOTOSET_LIST_METHOD+"&api_key="+API_KEY+"&user_id="+USER_ID+"&format="+FORMAT+"&nojsoncallback="+NOJSONCALLBACK+"";
     String POPULAR_PHOTO_LIST_URL = "rest/?method="+POPULAR_PHOTO_METHOD+"&api_key="+API_KEY+"&user_id=66956608@N06&format="+FORMAT+"&nojsoncallback="+NOJSONCALLBACK+"";
 
@@ -39,8 +38,5 @@ public interface RetroApi {
 
     @GET(PHOTO_GETSIZE_URL)
     Call<PhotoSize> getPhotoSize(@Query("photo_id") String id);
-
-    @GET
-    Call<String> downloadPhoto(@Url String url);
 
 }

@@ -18,6 +18,8 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -29,11 +31,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class CategoryFragment extends Fragment {
 
+    @BindView(R.id.category_recyclerView)
+    RecyclerView recyclerView;
+
+    @BindView(R.id.categorySwipe)
+    SwipeRefreshLayout swipeRefreshLayout;
+
     private CategoryRecyclerViewHolder myViewHolder;
     private List<UrlDetails> seriesList;
     Context context;
     List<Photoset> photo;
-    SwipeRefreshLayout swipeRefreshLayout;
+
     public CategoryFragment() {
         // Required empty public constructor
     }
@@ -44,13 +52,12 @@ public class CategoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_category, container, false);
-        context = container.getContext();
-        RecyclerView recyclerView = view.findViewById(R.id.category_recyclerView);
+        ButterKnife.bind(this,view);
+
         recyclerView.setHasFixedSize(true);
         seriesList = new ArrayList<>();
         myViewHolder = new CategoryRecyclerViewHolder(seriesList,getActivity());
 
-        swipeRefreshLayout = view.findViewById(R.id.categorySwipe);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),1);
         recyclerView.setLayoutManager(gridLayoutManager);

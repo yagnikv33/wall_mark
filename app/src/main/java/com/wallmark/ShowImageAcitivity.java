@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.gson.GsonBuilder;
@@ -11,6 +12,8 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -19,10 +22,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ShowImageAcitivity extends AppCompatActivity {
 
+    @BindView(R.id.showImageViewPager)
+    ViewPager viewPager;
+
     List<UrlDetails> list;
     ShowImageViewPagerAdapter adapter;
     String name,frame,pos,id;
-    ViewPager viewPager;
+
     List<Photo> photo;
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("https://api.flickr.com/services/")
@@ -37,14 +43,14 @@ public class ShowImageAcitivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_image_acitivity);
+        ButterKnife.bind(this);
+
         Intent intent = getIntent();
         name = intent.getStringExtra("name");
         frame = intent.getStringExtra("frame");
         pos = intent.getStringExtra("pos");
         id = intent.getStringExtra("id");
 
-
-        viewPager = findViewById(R.id.showImageViewPager);
         list = new ArrayList<>();
         adapter = new ShowImageViewPagerAdapter(getSupportFragmentManager(),list);
         viewPager.setAdapter(adapter);
@@ -115,5 +121,4 @@ public class ShowImageAcitivity extends AppCompatActivity {
             }
         });
     }
-
 }

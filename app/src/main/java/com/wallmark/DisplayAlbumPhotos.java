@@ -14,6 +14,8 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -21,22 +23,28 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DisplayAlbumPhotos extends AppCompatActivity {
 
+    @BindView(R.id.album_recyclerView)
+    RecyclerView recyclerView;
+
+    @BindView(R.id.albumPhotoSwipe)
+    SwipeRefreshLayout swipeRefreshLayout;
+
     private AllPhotoRecyclerViewHolder myViewHolder;
     private List<UrlDetails> seriesList;
-    SwipeRefreshLayout swipeRefreshLayout;
+
     List<CategoryPhotoDetails> photo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_album_photos);
+        ButterKnife.bind(this);
+
         Intent i = getIntent();
         final String id = i.getStringExtra("album_id");
-        RecyclerView recyclerView = findViewById(R.id.album_recyclerView);
+
         recyclerView.setHasFixedSize(true);
         seriesList = new ArrayList<>();
         myViewHolder = new AllPhotoRecyclerViewHolder(seriesList,getApplicationContext(),"CATEGORY_PHOTO");
-
-        swipeRefreshLayout = findViewById(R.id.albumPhotoSwipe);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),3);
         recyclerView.setLayoutManager(gridLayoutManager);

@@ -1,6 +1,7 @@
 package com.wallmark;
 
 
+import android.animation.ObjectAnimator;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
@@ -13,7 +14,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +25,8 @@ import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,11 +40,19 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ShowImageFragment extends Fragment {
 
     //FloatingActionButton fab;
+    @BindView(R.id.showImageView)
     ImageView imageView;
+
+    @BindView(R.id.download)
+    TextView download;
+
+    @BindView(R.id.image_title)
+    TextView title;
+
     List<Size> photo;
     private DownloadManager downloadmanager;
     int flag;
-    TextView dowanload,title;
+
     public ShowImageFragment() {
         // Required empty
         // public constructor
@@ -51,28 +64,26 @@ public class ShowImageFragment extends Fragment {
         // Inflate the layout for this fragment
 
         final View view  = inflater.inflate(R.layout.show_image_fragment, container, false);
-        //fab = view.findViewById(R.id.download_button);
-
-
+        ButterKnife.bind(this,view);
 
         downloadmanager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
+
         assert getArguments() != null;
         final String url = getArguments().getString("url");
         final String id = getArguments().getString("id");
         final String name = getArguments().getString("name");
-        imageView = view.findViewById(R.id.showImageView);
-        dowanload = view.findViewById(R.id.download);
-        title = view.findViewById(R.id.image_title);
+
         Glide.with(getActivity())
                 .load(url)
                 .into(imageView);
         title.setText(name);
-        dowanload.setOnClickListener(new View.OnClickListener() {
+
+        download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dowanload.setScaleX(0);
-                dowanload.setScaleY(0);
-                dowanload.animate().scaleX(1).scaleY(1).start();
+                download.setScaleX(0);
+                download.setScaleY(0);
+                download.animate().scaleX(1).scaleY(1).start();
                 downloadImage(id,name);
             }
         });
