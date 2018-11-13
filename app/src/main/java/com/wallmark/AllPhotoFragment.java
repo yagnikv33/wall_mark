@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.gson.GsonBuilder;
@@ -36,6 +37,9 @@ public class AllPhotoFragment extends Fragment{
 
     @BindView(R.id.all_photo_recyclerView)
     RecyclerView recyclerView;
+
+    @BindView(R.id.all_photo_fragment_progressbar)
+    ProgressBar progressBar;
 
     private AllPhotoRecyclerViewHolder myViewHolder;
     private List<UrlDetails> seriesList;
@@ -71,6 +75,7 @@ public class AllPhotoFragment extends Fragment{
             @Override
             public void onRefresh() {
                     myViewHolder.clear();
+                    progressBar.setVisibility(ProgressBar.VISIBLE);
                     swipeRefreshLayout.setEnabled(false);
                     prepareForData();
                     myViewHolder.addAll(seriesList);
@@ -105,6 +110,7 @@ public class AllPhotoFragment extends Fragment{
                     String url = "http://farm"+farm+".staticflickr.com/"+server+"/"+id+"_"+secret+"_b.jpg";
                     seriesList.add(new UrlDetails(url,id,name));
                     myViewHolder.notifyDataSetChanged();
+                    progressBar.setVisibility(ProgressBar.GONE);
                 }
                 swipeRefreshLayout.setEnabled(true);
             }

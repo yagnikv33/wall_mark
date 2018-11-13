@@ -38,6 +38,9 @@ public class PopularPhotoFragment extends Fragment {
     @BindView(R.id.popularPhotoSwipe)
     SwipeRefreshLayout swipeRefreshLayout;
 
+    @BindView(R.id.popular_photo_progressbar)
+    ProgressBar progressBar;
+
     private AllPhotoRecyclerViewHolder myViewHolder;
     private List<UrlDetails> seriesList;
 
@@ -68,6 +71,7 @@ public class PopularPhotoFragment extends Fragment {
             @Override
             public void onRefresh() {
                 myViewHolder.clear();
+                progressBar.setVisibility(ProgressBar.VISIBLE);
                 swipeRefreshLayout.setEnabled(false);
                 prepareForData();
                 myViewHolder.addAll(seriesList);
@@ -99,6 +103,7 @@ public class PopularPhotoFragment extends Fragment {
                     String url = "http://farm"+farm+".staticflickr.com/"+server+"/"+id+"_"+secret+"_b.jpg";
                     seriesList.add(new UrlDetails(url,id,name));
                     myViewHolder.notifyDataSetChanged();
+                    progressBar.setVisibility(ProgressBar.GONE);
                 }
                 swipeRefreshLayout.setEnabled(true);
             }

@@ -57,6 +57,9 @@ public class ShowImageFragment extends Fragment {
     @BindView(R.id.buttonLayout)
     LinearLayout buttonLayout;
 
+    @BindView(R.id.showimage_fragment_progressbar)
+    ProgressBar progressBar;
+
     List<Size> photo;
     private DownloadManager downloadmanager;
     int flag;
@@ -85,7 +88,7 @@ public class ShowImageFragment extends Fragment {
                 .load(url)
                 .into(imageView);
         title.setText(name);
-
+        progressBar.setVisibility(ProgressBar.GONE);
         download.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
