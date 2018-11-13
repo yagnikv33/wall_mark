@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.gson.GsonBuilder;
@@ -28,6 +29,9 @@ public class DisplayAlbumPhotos extends AppCompatActivity {
 
     @BindView(R.id.albumPhotoSwipe)
     SwipeRefreshLayout swipeRefreshLayout;
+
+    @BindView(R.id.display_album_photo_progressbar)
+    ProgressBar progressBar;
 
     private AllPhotoRecyclerViewHolder myViewHolder;
     private List<UrlDetails> seriesList;
@@ -55,6 +59,7 @@ public class DisplayAlbumPhotos extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 myViewHolder.clear();
+                progressBar.setVisibility(ProgressBar.VISIBLE);
                 prepareForData(id);
                 myViewHolder.addAll(seriesList);
                 swipeRefreshLayout.setRefreshing(false);
@@ -89,6 +94,7 @@ public class DisplayAlbumPhotos extends AppCompatActivity {
                     String url = "http://farm"+farm+".staticflickr.com/"+server+"/"+photo_id+"_"+secret+"_b.jpg";
                     seriesList.add(new UrlDetails(url,id,name));
                     myViewHolder.notifyDataSetChanged();
+                    progressBar.setVisibility(ProgressBar.GONE);
                 }
             }
 

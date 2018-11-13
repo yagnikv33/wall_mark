@@ -108,7 +108,7 @@ public class PopularPhotoFragment extends Fragment {
                 swipeRefreshLayout.setEnabled(true);
             }
             @Override
-            public void onFailure(Call<Model> call, Throwable t) {
+            public void onFailure(@NonNull Call<Model> call, @NonNull Throwable t) {
                 Toast.makeText(getActivity(), "Some thing Wrong! Try Again", Toast.LENGTH_SHORT).show();
             }
         });
