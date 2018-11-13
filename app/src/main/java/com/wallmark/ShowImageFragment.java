@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import com.google.gson.GsonBuilder;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,6 +50,12 @@ public class ShowImageFragment extends Fragment {
 
     @BindView(R.id.image_title)
     TextView title;
+
+    @BindView(R.id.titleLayout)
+    LinearLayout titleLayout;
+
+    @BindView(R.id.buttonLayout)
+    LinearLayout buttonLayout;
 
     List<Size> photo;
     private DownloadManager downloadmanager;
@@ -91,15 +99,13 @@ public class ShowImageFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(flag == 1){
-                    view.findViewById(R.id.titleLayout).setVisibility(View.VISIBLE);
-                    view.findViewById(R.id.buttonLayout).setVisibility(View.VISIBLE);
-                    getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                    titleLayout.setVisibility(View.VISIBLE);
+                    buttonLayout.setVisibility(View.VISIBLE);
                     flag = 0;
                 }
                 else{
-                    view.findViewById(R.id.titleLayout).setVisibility(View.GONE);
-                    view.findViewById(R.id.buttonLayout).setVisibility(View.GONE);
-                    getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                    titleLayout.setVisibility(View.GONE);
+                    buttonLayout.setVisibility(View.GONE);
                     flag = 1;
                 }
                 imageView.setClickable(true);

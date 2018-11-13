@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.gson.GsonBuilder;
@@ -52,7 +53,6 @@ public class PopularPhotoFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_popular_photo, container, false);
         ButterKnife.bind(this,view);
-
         recyclerView.setHasFixedSize(true);
         seriesList = new ArrayList<>();
         myViewHolder = new AllPhotoRecyclerViewHolder(seriesList,getActivity(),"POPULAR_PHOTO");
@@ -64,7 +64,6 @@ public class PopularPhotoFragment extends Fragment {
 
         swipeRefreshLayout.setEnabled(false);
         prepareForData();
-
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

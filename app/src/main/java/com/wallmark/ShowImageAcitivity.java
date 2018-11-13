@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -44,7 +45,7 @@ public class ShowImageAcitivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_image_acitivity);
         ButterKnife.bind(this);
-
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Intent intent = getIntent();
         name = intent.getStringExtra("name");
         frame = intent.getStringExtra("frame");
