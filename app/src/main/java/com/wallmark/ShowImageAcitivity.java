@@ -26,6 +26,9 @@ public class ShowImageAcitivity extends AppCompatActivity {
     @BindView(R.id.showImageViewPager)
     ViewPager viewPager;
 
+    @BindView(R.id.show_image_activity_progressbar)
+    ProgressBar progressBar;
+
     List<UrlDetails> list;
     ShowImageViewPagerAdapter adapter;
     String name,frame,pos,id;
@@ -86,6 +89,7 @@ public class ShowImageAcitivity extends AppCompatActivity {
                             list.add(new UrlDetails(url,id,name));
                             adapter.notifyDataSetChanged();
                             viewPager.setCurrentItem(Integer.parseInt(pos));
+                            progressBar.setVisibility(ProgressBar.GONE);
                         }
                     }
 
@@ -113,6 +117,7 @@ public class ShowImageAcitivity extends AppCompatActivity {
                     list.add(new UrlDetails(url,id,name));
                     adapter.notifyDataSetChanged();
                     viewPager.setCurrentItem(Integer.parseInt(pos));
+                    progressBar.setVisibility(ProgressBar.GONE);
                 }
 
             }

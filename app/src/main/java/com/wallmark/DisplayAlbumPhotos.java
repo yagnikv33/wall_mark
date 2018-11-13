@@ -80,29 +80,6 @@ public class DisplayAlbumPhotos extends AppCompatActivity {
 
         Call<CategoryPhoto> call = retroApi.getCategotyPhotos(id);
 
-        call.enqueue(new Callback<CategoryPhoto>() {
-            @Override
-            public void onResponse(Call<CategoryPhoto> call, retrofit2.Response<CategoryPhoto> response) {
-                photo = response.body().getCategoryPhotoDetails().getPhoto();
-                photo = response.body().getCategoryPhotoDetails().getPhoto();
-                for(int i=0; i < photo.size(); i++){
-                    int farm = photo.get(i).getFarm();
-                    String server = photo.get(i).getServer();
-                    String photo_id = photo.get(i).getId();
-                    String secret = photo.get(i).getSecret();
-                    String name = photo.get(i).getTitle();
-                    String url = "http://farm"+farm+".staticflickr.com/"+server+"/"+photo_id+"_"+secret+"_b.jpg";
-                    seriesList.add(new UrlDetails(url,id,name));
-                    myViewHolder.notifyDataSetChanged();
-                    progressBar.setVisibility(ProgressBar.GONE);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CategoryPhoto> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Some thing Wrong! Try Again", Toast.LENGTH_SHORT).show();
-            }
-        });
 
     }
 }
