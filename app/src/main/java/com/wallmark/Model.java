@@ -496,13 +496,13 @@ class CategoryPhoto {
 
     @SerializedName("photoset")
     @Expose
-    private CategoryPhotosetDetails categoryPhotoDetails;
+    private CategoryPhotosetDetails photoset;
     @SerializedName("stat")
     @Expose
     private String stat;
 
     public CategoryPhotosetDetails getCategoryPhotoDetails() {
-        return categoryPhotoDetails;
+        return photoset;
     }
 
     public String getStat() {

@@ -25,6 +25,8 @@ import com.bumptech.glide.Glide;
 import com.google.gson.GsonBuilder;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.BindViews;
@@ -130,12 +132,13 @@ public class ShowImageFragment extends Fragment {
         call.enqueue(new Callback<PhotoSize>() {
             @Override
             public void onResponse(Call<PhotoSize> call, Response<PhotoSize> response) {
+
                 photo = response.body().getSizes().getSize();
                 Uri download_uri = Uri.parse(photo.get(photo.size()-1).getSource());
                 DownloadManager.Request request = new DownloadManager.Request(download_uri);
                 request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
                 request.setAllowedOverRoaming(false);
-                request.setTitle(name);
+                request.setTitle("Wall Mark");
                 request.setDescription(name +".jpg");
                 request.setVisibleInDownloadsUi(true);
                 request.setDestinationInExternalPublicDir("Wall Mark",  name + ".jpg");

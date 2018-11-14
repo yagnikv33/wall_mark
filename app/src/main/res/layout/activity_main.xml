@@ -6,19 +6,6 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-
-    <android.support.design.widget.NavigationView
-        android:id="@+id/nav_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="#fff"
-        android:fitsSystemWindows="true"
-        app:menu="@menu/my_menu">
-
-    </android.support.design.widget.NavigationView>
-
-
 <android.support.design.widget.CoordinatorLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
@@ -64,4 +51,13 @@
 
     </android.support.design.widget.CoordinatorLayout>
 
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/colorPrimary"
+        android:fitsSystemWindows="true"
+        android:visibility="visible"
+        app:menu="@menu/my_menu"></android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>

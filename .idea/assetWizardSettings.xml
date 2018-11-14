@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/D:/Android/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/navigation/ic_arrow_back_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/D:/Android/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/navigation/ic_refresh_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,12 +28,11 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="autoMirrored" value="true" />
                             <entry key="color" value="ffffff" />
-                            <entry key="height" value="40" />
-                            <entry key="outputName" value="ic_arrow_back" />
+                            <entry key="outputName" value="ic_refresh" />
                             <entry key="overrideSize" value="true" />
                             <entry key="sourceFile" value="C:\Users\Kishan Dekivadiya" />
-                            <entry key="width" value="40" />
                           </map>
                         </option>
                       </PersistentState>

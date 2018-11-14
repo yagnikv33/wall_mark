@@ -101,7 +101,8 @@ public class AllPhotoFragment extends Fragment{
             @Override
             public void onResponse(Call<Model> call, retrofit2.Response<Model> response) {
                 photo = response.body().getPhotos().getPhoto();
-                for(int i=0; i < photo.size(); i++){
+                int z=0;
+                for(int i=0; i <photo.size(); i++){
                     int farm = photo.get(i).getFarm();
                     String server = photo.get(i).getServer();
                     String id = photo.get(i).getId();

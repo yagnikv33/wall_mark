@@ -1,5 +1,6 @@
 package com.wallmark;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -45,7 +46,7 @@ public class  AllPhotoRecyclerViewHolder extends RecyclerView.Adapter<AllPhotoRe
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, @SuppressLint("RecyclerView") final int i) {
         final String name = myLists.get(i).getName();
         Glide.with(context).load(myLists.get(i).getUrl()).into(viewHolder.imageView);
         viewHolder.imageView.setOnClickListener(new View.OnClickListener() {

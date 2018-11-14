@@ -55,6 +55,14 @@ public class MainActivity extends AppCompatActivity {
             case android.R.id.home:
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
+
+            case R.id.search:
+                Toast.makeText(this, "Search Select", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.menu_refresh:
+                Toast.makeText(this, "Refresh Select", Toast.LENGTH_SHORT).show();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
