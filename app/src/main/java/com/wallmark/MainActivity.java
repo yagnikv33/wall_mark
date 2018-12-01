@@ -49,6 +49,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Bundle extras = getIntent().getExtras();
+        if(extras != null && extras.containsKey("test")){
+            Toast.makeText(this, "From: " + extras.getString("test"), Toast.LENGTH_LONG).show();
+        }
+
     }
 
     @Override

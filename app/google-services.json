@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "10135293378",
+    "firebase_url": "https://wall-mark.firebaseio.com",
+    "project_id": "wall-mark",
+    "storage_bucket": "wall-mark.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:10135293378:android:073ee74a59806452",
+        "android_client_info": {
+          "package_name": "com.wallmark"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "10135293378-qt0btgdgj040vrcfq0ssg5mo7kcrt43o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wallmark",
+            "certificate_hash": "698222a4cb0346381b4380407439e5abebfa33c1"
+          }
+        },
+        {
+          "client_id": "10135293378-eo91e9sqra03k3oo7d16qcb04apvgrrr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3v9kraXI-0LbBonSKrguIMW7WaIFXwVk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "10135293378-eo91e9sqra03k3oo7d16qcb04apvgrrr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
