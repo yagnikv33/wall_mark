@@ -49,8 +49,10 @@ public class ShowImageAcitivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.show_image_acitivity);
         ButterKnife.bind(this);
+        getWindow().setBackgroundDrawable(null);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Intent intent = getIntent();
+
         name = intent.getStringExtra("name");
         frame = intent.getStringExtra("frame");
         pos = intent.getStringExtra("pos");
@@ -80,12 +82,12 @@ public class ShowImageAcitivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<CategoryPhoto> call, Response<CategoryPhoto> response) {
                         List<CategoryPhotoDetails> photo = response.body().getCategoryPhotoDetails().getPhoto();
-                        for(int i=0; i < photo.size(); i++){
-                            int farm = photo.get(i).getFarm();
-                            String server = photo.get(i).getServer();
-                            String id = photo.get(i).getId();
-                            String secret = photo.get(i).getSecret();
-                            String name = photo.get(i).getTitle();
+                        for(CategoryPhotoDetails lists : photo){
+                            int farm = lists.getFarm();
+                            String server = lists.getServer();
+                            String id = lists.getId();
+                            String secret = lists.getSecret();
+                            String name = lists.getTitle();
                             String url = "http://farm"+farm+".staticflickr.com/"+server+"/"+id+"_"+secret+"_b.jpg";
                             list.add(new UrlDetails(url,id,name));
                             adapter.notifyDataSetChanged();
@@ -108,12 +110,12 @@ public class ShowImageAcitivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Model> call, retrofit2.Response<Model> response) {
                 photo = response.body().getPhotos().getPhoto();
-                for(int i=0; i < photo.size(); i++){
-                    int farm = photo.get(i).getFarm();
-                    String server = photo.get(i).getServer();
-                    String id = photo.get(i).getId();
-                    String secret = photo.get(i).getSecret();
-                    String name = photo.get(i).getTitle();
+                for(Photo lists : photo){
+                    int farm = lists.getFarm();
+                    String server = lists.getServer();
+                    String id = lists.getId();
+                    String secret = lists.getSecret();
+                    String name = lists.getTitle();
                     String url = "http://farm"+farm+".staticflickr.com/"+server+"/"+id+"_"+secret+"_b.jpg";
                     list.add(new UrlDetails(url,id,name));
                     adapter.notifyDataSetChanged();

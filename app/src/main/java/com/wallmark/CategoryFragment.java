@@ -98,13 +98,13 @@ public class CategoryFragment extends Fragment {
             @Override
             public void onResponse(Call<Category> call, retrofit2.Response<Category> response) {
                 photo = response.body().getPhotosets().getPhotoset();
-                for(int i =0;i<photo.size(); i++){
-                    int farm = photo.get(0).getFarm();
-                    String server = photo.get(i).getServer();
-                    String primary = photo.get(i).getPrimary();
-                    String secret = photo.get(i).getSecret();
-                    String id = photo.get(i).getId();
-                    String name = photo.get(i).getTitle().getContent();
+                for (Photoset list: photo) {
+                    int farm = list.getFarm();
+                    String server = list.getServer();
+                    String primary = list.getPrimary();
+                    String secret = list.getSecret();
+                    String id = list.getId();
+                    String name = list.getTitle().getContent();
                     String url = "http://farm"+farm+".staticflickr.com/"+server+"/"+primary+"_"+secret+".jpg";
                     seriesList.add(new UrlDetails(url,id,name));
                     myViewHolder.notifyDataSetChanged();

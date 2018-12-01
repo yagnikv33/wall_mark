@@ -94,12 +94,12 @@ public class PopularPhotoFragment extends Fragment {
             @Override
             public void onResponse(Call<Model> call, retrofit2.Response<Model> response) {
                 photo = response.body().getPhotos().getPhoto();
-                for(int i=0; i < photo.size(); i++){
-                    int farm = photo.get(i).getFarm();
-                    String server = photo.get(i).getServer();
-                    String id = photo.get(i).getId();
-                    String secret = photo.get(i).getSecret();
-                    String name = photo.get(i).getTitle();
+                for(Photo list : photo){
+                    int farm = list.getFarm();
+                    String server = list.getServer();
+                    String id = list.getId();
+                    String secret = list.getSecret();
+                    String name = list.getTitle();
                     String url = "http://farm"+farm+".staticflickr.com/"+server+"/"+id+"_"+secret+"_b.jpg";
                     seriesList.add(new UrlDetails(url,id,name));
                     myViewHolder.notifyDataSetChanged();

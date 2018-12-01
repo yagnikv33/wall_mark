@@ -35,11 +35,7 @@
             android:layout_marginBottom="8dp"
             android:padding="8dp"
             android:text="Title"
-            android:textAppearance="?attr/textAppearanceHeadline3"
-            android:textColor="#fff"
-            android:textSize="36sp"
-            android:textStyle="bold" />
-
+            android:textAppearance="?attr/textAppearanceHeadline3" />
     </RelativeLayout>
 
 </android.support.design.card.MaterialCardView>
