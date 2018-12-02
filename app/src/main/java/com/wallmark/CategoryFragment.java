@@ -63,12 +63,14 @@ public class CategoryFragment extends Fragment {
         myViewHolder = new CategoryRecyclerViewHolder(seriesList,getActivity());
 
 
+
+        swipeRefreshLayout.setEnabled(false);
+        prepareForData();
+
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),1);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(myViewHolder);
-        swipeRefreshLayout.setEnabled(false);
-        prepareForData();
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

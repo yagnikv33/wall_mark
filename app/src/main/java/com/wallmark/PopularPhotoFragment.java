@@ -60,13 +60,15 @@ public class PopularPhotoFragment extends Fragment {
         seriesList = new ArrayList<>();
         myViewHolder = new AllPhotoRecyclerViewHolder(seriesList,getActivity(),"POPULAR_PHOTO");
 
+
+
+        swipeRefreshLayout.setEnabled(false);
+        prepareForData();
+
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),3);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(myViewHolder);
-
-        swipeRefreshLayout.setEnabled(false);
-        prepareForData();
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
