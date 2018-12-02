@@ -11,8 +11,7 @@ public class ShowImageViewPagerAdapter extends FragmentPagerAdapter {
 
     private List<UrlDetails> myList;
 
-
-    public ShowImageViewPagerAdapter(FragmentManager fm,List<UrlDetails> myList) {
+    ShowImageViewPagerAdapter(FragmentManager fm, List<UrlDetails> myList) {
         super(fm);
         this.myList = myList;
 

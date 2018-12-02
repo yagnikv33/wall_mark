@@ -101,7 +101,8 @@ public class AllPhotoFragment extends Fragment{
 
         call.enqueue(new Callback<Model>() {
             @Override
-            public void onResponse(Call<Model> call, Response<Model> response) {
+            public void onResponse(@NonNull Call<Model> call, @NonNull Response<Model> response) {
+                assert response.body() != null;
                 photo = response.body().getPhotos().getPhoto();
                 for (Photo list : photo) {
                     int farm = list.getFarm();
@@ -117,7 +118,7 @@ public class AllPhotoFragment extends Fragment{
                 swipeRefreshLayout.setEnabled(true);
             }
             @Override
-            public void onFailure(Call<Model> call, Throwable t) {
+            public void onFailure(@NonNull Call<Model> call, @NonNull Throwable t) {
                 Toast.makeText(getActivity(), "Some thing Wrong! Try Again", Toast.LENGTH_SHORT).show();
             }
         });

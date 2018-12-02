@@ -2,9 +2,9 @@ package com.wallmark;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -80,7 +80,8 @@ public class ShowImageAcitivity extends AppCompatActivity {
                 Call<CategoryPhoto> cateCall = retroApi.getCategotyPhotos(id);
                 cateCall.enqueue(new Callback<CategoryPhoto>() {
                     @Override
-                    public void onResponse(Call<CategoryPhoto> call, Response<CategoryPhoto> response) {
+                    public void onResponse(@NonNull Call<CategoryPhoto> call, @NonNull Response<CategoryPhoto> response) {
+                        assert response.body() != null;
                         List<CategoryPhotoDetails> photo = response.body().getCategoryPhotoDetails().getPhoto();
                         for(CategoryPhotoDetails lists : photo){
                             int farm = lists.getFarm();
@@ -97,7 +98,7 @@ public class ShowImageAcitivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<CategoryPhoto> call, Throwable t) {
+                    public void onFailure(@NonNull Call<CategoryPhoto> call, @NonNull Throwable t) {
                         Toast.makeText(getApplicationContext(), "Some thing Wrong! Try Again", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -108,7 +109,8 @@ public class ShowImageAcitivity extends AppCompatActivity {
     private void getAllPhotos() {
         call.enqueue(new Callback<Model>() {
             @Override
-            public void onResponse(Call<Model> call, retrofit2.Response<Model> response) {
+            public void onResponse(@NonNull Call<Model> call, @NonNull retrofit2.Response<Model> response) {
+                assert response.body() != null;
                 photo = response.body().getPhotos().getPhoto();
                 for(Photo lists : photo){
                     int farm = lists.getFarm();
@@ -125,7 +127,7 @@ public class ShowImageAcitivity extends AppCompatActivity {
 
             }
             @Override
-            public void onFailure(Call<Model> call, Throwable t) {
+            public void onFailure(@NonNull Call<Model> call, @NonNull Throwable t) {
                 Toast.makeText(getApplicationContext(), "Some thing Wrong! Try Again", Toast.LENGTH_SHORT).show();
             }
         });

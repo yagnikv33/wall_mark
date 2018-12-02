@@ -1,35 +1,26 @@
 package com.wallmark;
 
 
-import android.animation.ObjectAnimator;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.GsonBuilder;
 
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -79,14 +70,14 @@ public class ShowImageFragment extends Fragment {
         final View view  = inflater.inflate(R.layout.show_image_fragment, container, false);
         ButterKnife.bind(this,view);
 
-        downloadmanager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
+        downloadmanager = (DownloadManager) container.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
 
         assert getArguments() != null;
         final String url = getArguments().getString("url");
         final String id = getArguments().getString("id");
         final String name = getArguments().getString("name");
 
-        Glide.with(getActivity())
+        Glide.with(container.getContext())
                 .load(url)
                 .into(imageView);
         title.setText(name);
@@ -131,8 +122,9 @@ public class ShowImageFragment extends Fragment {
 
         call.enqueue(new Callback<PhotoSize>() {
             @Override
-            public void onResponse(Call<PhotoSize> call, Response<PhotoSize> response) {
+            public void onResponse(@NonNull Call<PhotoSize> call, @NonNull Response<PhotoSize> response) {
 
+                assert response.body() != null;
                 photo = response.body().getSizes().getSize();
                 Uri download_uri = Uri.parse(photo.get(photo.size()-1).getSource());
                 DownloadManager.Request request = new DownloadManager.Request(download_uri);
@@ -143,11 +135,12 @@ public class ShowImageFragment extends Fragment {
                 request.setVisibleInDownloadsUi(true);
                 request.setDestinationInExternalPublicDir("Wall Mark",  name + ".jpg");
                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                
                 downloadmanager.enqueue(request);
             }
 
             @Override
-            public void onFailure(Call<PhotoSize> call, Throwable t) {
+            public void onFailure(@NonNull Call<PhotoSize> call, @NonNull Throwable t) {
 
             }
         });

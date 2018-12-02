@@ -3,12 +3,10 @@ package com.wallmark;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import java.io.File;
@@ -42,18 +40,6 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        viewPager.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawerLayout.closeDrawers();
-            }
-        });
-
-        Bundle extras = getIntent().getExtras();
-        if(extras != null && extras.containsKey("test")){
-            Toast.makeText(this, "From: " + extras.getString("test"), Toast.LENGTH_LONG).show();
-        }
-
     }
 
     @Override
@@ -66,10 +52,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId())
         {
-            case android.R.id.home:
-                drawerLayout.openDrawer(GravityCompat.START);
-                return true;
-
             case R.id.search:
                 Toast.makeText(this, "Search Select", Toast.LENGTH_SHORT).show();
                 break;

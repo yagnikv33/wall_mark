@@ -98,7 +98,8 @@ public class CategoryFragment extends Fragment {
 
         call.enqueue(new Callback<Category>() {
             @Override
-            public void onResponse(Call<Category> call, retrofit2.Response<Category> response) {
+            public void onResponse(@NonNull Call<Category> call, @NonNull retrofit2.Response<Category> response) {
+                assert response.body() != null;
                 photo = response.body().getPhotosets().getPhotoset();
                 for (Photoset list: photo) {
                     int farm = list.getFarm();
@@ -116,7 +117,7 @@ public class CategoryFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<Category> call, Throwable t) {
+            public void onFailure(@NonNull Call<Category> call, @NonNull Throwable t) {
 
             }
         });

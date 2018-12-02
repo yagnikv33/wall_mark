@@ -22,7 +22,7 @@ public class  AllPhotoRecyclerViewHolder extends RecyclerView.Adapter<AllPhotoRe
     public Context context;
     private String frame;
 
-    public AllPhotoRecyclerViewHolder(List<UrlDetails> myLists, Context context, String frame) {
+    AllPhotoRecyclerViewHolder(List<UrlDetails> myLists, Context context, String frame) {
         this.myLists = myLists;
         this.context = context;
         this.frame = frame;
@@ -48,7 +48,9 @@ public class  AllPhotoRecyclerViewHolder extends RecyclerView.Adapter<AllPhotoRe
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, @SuppressLint("RecyclerView") final int i) {
         final String name = myLists.get(i).getName();
-        Glide.with(context).load(myLists.get(i).getUrl()).into(viewHolder.imageView);
+        Glide.with(context)
+                .load(myLists.get(i).getUrl())
+                .into(viewHolder.imageView);
         viewHolder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

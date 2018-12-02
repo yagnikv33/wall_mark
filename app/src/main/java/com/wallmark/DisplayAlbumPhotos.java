@@ -2,14 +2,13 @@ package com.wallmark;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.google.gson.GsonBuilder;
 
@@ -84,7 +83,8 @@ public class DisplayAlbumPhotos extends AppCompatActivity {
 
         call.enqueue(new Callback<CategoryPhoto>() {
             @Override
-            public void onResponse(Call<CategoryPhoto> call, Response<CategoryPhoto> response) {
+            public void onResponse(@NonNull Call<CategoryPhoto> call, @NonNull Response<CategoryPhoto> response) {
+                assert response.body() != null;
                 photo = response.body().getCategoryPhotoDetails().getPhoto();
                 for (CategoryPhotoDetails list : photo) {
                     int farm = list.getFarm();
@@ -101,7 +101,7 @@ public class DisplayAlbumPhotos extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<CategoryPhoto> call, Throwable t) {
+            public void onFailure(@NonNull Call<CategoryPhoto> call, @NonNull Throwable t) {
 
             }
         });

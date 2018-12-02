@@ -54,7 +54,6 @@ public class SplashActivity extends AppCompatActivity {
                     }, 800);
                 } else {
                     Toast.makeText(this, "Please Allow Storage Permission", Toast.LENGTH_SHORT).show();
-                    return;
                 }
         }
     }

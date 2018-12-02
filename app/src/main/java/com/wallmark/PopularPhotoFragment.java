@@ -94,7 +94,8 @@ public class PopularPhotoFragment extends Fragment {
         Call<Model> call = retroApi.getPopular();
         call.enqueue(new Callback<Model>() {
             @Override
-            public void onResponse(Call<Model> call, retrofit2.Response<Model> response) {
+            public void onResponse(@NonNull Call<Model> call, @NonNull retrofit2.Response<Model> response) {
+                assert response.body() != null;
                 photo = response.body().getPhotos().getPhoto();
                 for(Photo list : photo){
                     int farm = list.getFarm();
