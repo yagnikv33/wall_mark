@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="225dp"
     app:cardElevation="0dp"
-    app:cardPreventCornerOverlap="true"
     android:layout_margin="8dp"
-    android:elevation="8dp"
-    app:cardCornerRadius="8dp"
-    tools:targetApi="lollipop">
+    app:cardCornerRadius="8dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -35,7 +32,9 @@
             android:layout_marginBottom="8dp"
             android:padding="8dp"
             android:text="Title"
-            android:textAppearance="?attr/textAppearanceHeadline3" />
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:textSize="30sp"
+            android:textStyle="bold" />
     </RelativeLayout>
 
 </android.support.design.card.MaterialCardView>
