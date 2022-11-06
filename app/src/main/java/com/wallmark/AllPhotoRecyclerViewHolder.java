@@ -3,12 +3,13 @@ package com.wallmark;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
@@ -17,9 +18,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class  AllPhotoRecyclerViewHolder extends RecyclerView.Adapter<AllPhotoRecyclerViewHolder.ViewHolder> {
-    private List<UrlDetails> myLists;
+public class AllPhotoRecyclerViewHolder extends RecyclerView.Adapter<AllPhotoRecyclerViewHolder.ViewHolder> {
     public Context context;
+    private List<UrlDetails> myLists;
     private String frame;
 
     AllPhotoRecyclerViewHolder(List<UrlDetails> myLists, Context context, String frame) {
@@ -28,12 +29,12 @@ public class  AllPhotoRecyclerViewHolder extends RecyclerView.Adapter<AllPhotoRe
         this.frame = frame;
     }
 
-    void clear(){
+    void clear() {
         myLists.clear();
         notifyDataSetChanged();
     }
 
-    void addAll(List<UrlDetails> list){
+    void addAll(List<UrlDetails> list) {
         myLists.addAll(list);
         notifyDataSetChanged();
     }
@@ -54,11 +55,11 @@ public class  AllPhotoRecyclerViewHolder extends RecyclerView.Adapter<AllPhotoRe
         viewHolder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context,ShowImageAcitivity.class);
-                intent.putExtra("name",name);
-                intent.putExtra("id",myLists.get(i).getId());
-                intent.putExtra("frame",frame);
-                intent.putExtra("pos",String.valueOf(i));
+                Intent intent = new Intent(context, ShowImageAcitivity.class);
+                intent.putExtra("name", name);
+                intent.putExtra("id", myLists.get(i).getId());
+                intent.putExtra("frame", frame);
+                intent.putExtra("pos", String.valueOf(i));
                 view.getContext().startActivity(intent);
             }
         });
@@ -72,9 +73,10 @@ public class  AllPhotoRecyclerViewHolder extends RecyclerView.Adapter<AllPhotoRe
     class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.rImage)
         ImageView imageView;
+
         ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

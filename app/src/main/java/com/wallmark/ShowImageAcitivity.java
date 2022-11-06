@@ -2,12 +2,13 @@ package com.wallmark;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.gson.GsonBuilder;
 
@@ -32,7 +33,7 @@ public class ShowImageAcitivity extends AppCompatActivity {
 
     List<UrlDetails> list;
     ShowImageViewPagerAdapter adapter;
-    String name,frame,pos,id;
+    String name, frame, pos, id;
 
     List<Photo> photo;
     Retrofit retrofit = new Retrofit.Builder()
@@ -59,13 +60,13 @@ public class ShowImageAcitivity extends AppCompatActivity {
         id = intent.getStringExtra("id");
 
         list = new ArrayList<>();
-        adapter = new ShowImageViewPagerAdapter(getSupportFragmentManager(),list);
+        adapter = new ShowImageViewPagerAdapter(getSupportFragmentManager(), list);
         viewPager.setAdapter(adapter);
         prepareForData();
     }
 
     private void prepareForData() {
-        switch (frame){
+        switch (frame) {
             case "ALL_PHOTO":
                 call = retroApi.getSerch();
                 getAllPhotos();
@@ -83,14 +84,14 @@ public class ShowImageAcitivity extends AppCompatActivity {
                     public void onResponse(@NonNull Call<CategoryPhoto> call, @NonNull Response<CategoryPhoto> response) {
                         assert response.body() != null;
                         List<CategoryPhotoDetails> photo = response.body().getCategoryPhotoDetails().getPhoto();
-                        for(CategoryPhotoDetails lists : photo){
+                        for (CategoryPhotoDetails lists : photo) {
                             int farm = lists.getFarm();
                             String server = lists.getServer();
                             String id = lists.getId();
                             String secret = lists.getSecret();
                             String name = lists.getTitle();
-                            String url = "http://farm"+farm+".staticflickr.com/"+server+"/"+id+"_"+secret+"_b.jpg";
-                            list.add(new UrlDetails(url,id,name));
+                            String url = "http://farm" + farm + ".staticflickr.com/" + server + "/" + id + "_" + secret + "_b.jpg";
+                            list.add(new UrlDetails(url, id, name));
                             adapter.notifyDataSetChanged();
                             viewPager.setCurrentItem(Integer.parseInt(pos));
                             progressBar.setVisibility(ProgressBar.GONE);
@@ -112,20 +113,21 @@ public class ShowImageAcitivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<Model> call, @NonNull retrofit2.Response<Model> response) {
                 assert response.body() != null;
                 photo = response.body().getPhotos().getPhoto();
-                for(Photo lists : photo){
+                for (Photo lists : photo) {
                     int farm = lists.getFarm();
                     String server = lists.getServer();
                     String id = lists.getId();
                     String secret = lists.getSecret();
                     String name = lists.getTitle();
-                    String url = "http://farm"+farm+".staticflickr.com/"+server+"/"+id+"_"+secret+"_b.jpg";
-                    list.add(new UrlDetails(url,id,name));
+                    String url = "http://farm" + farm + ".staticflickr.com/" + server + "/" + id + "_" + secret + "_b.jpg";
+                    list.add(new UrlDetails(url, id, name));
                     adapter.notifyDataSetChanged();
                     viewPager.setCurrentItem(Integer.parseInt(pos));
                     progressBar.setVisibility(ProgressBar.GONE);
                 }
 
             }
+
             @Override
             public void onFailure(@NonNull Call<Model> call, @NonNull Throwable t) {
                 Toast.makeText(getApplicationContext(), "Some thing Wrong! Try Again", Toast.LENGTH_SHORT).show();

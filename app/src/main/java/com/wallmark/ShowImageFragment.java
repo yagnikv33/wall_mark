@@ -5,8 +5,7 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +13,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.GsonBuilder;
@@ -38,6 +40,9 @@ public class ShowImageFragment extends Fragment {
     @BindView(R.id.showImageView)
     ImageView imageView;
 
+    @BindView(R.id.imageView2)
+    ImageView ivBack;
+
     @BindView(R.id.download)
     TextView download;
 
@@ -54,8 +59,8 @@ public class ShowImageFragment extends Fragment {
     ProgressBar progressBar;
 
     List<Size> photo;
-    private DownloadManager downloadmanager;
     int flag;
+    private DownloadManager downloadmanager;
 
     public ShowImageFragment() {
         // Required empty
@@ -67,8 +72,8 @@ public class ShowImageFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        final View view  = inflater.inflate(R.layout.show_image_fragment, container, false);
-        ButterKnife.bind(this,view);
+        final View view = inflater.inflate(R.layout.show_image_fragment, container, false);
+        ButterKnife.bind(this, view);
 
         downloadmanager = (DownloadManager) container.getContext().getSystemService(Context.DOWNLOAD_SERVICE);
 
@@ -81,6 +86,7 @@ public class ShowImageFragment extends Fragment {
                 .load(url)
                 .into(imageView);
         title.setText(name);
+
         progressBar.setVisibility(ProgressBar.GONE);
         download.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,18 +94,17 @@ public class ShowImageFragment extends Fragment {
                 download.setScaleX(0);
                 download.setScaleY(0);
                 download.animate().scaleX(1).scaleY(1).start();
-                downloadImage(id,name);
+                downloadImage(id, name);
             }
         });
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(flag == 1){
+                if (flag == 1) {
                     titleLayout.setVisibility(View.VISIBLE);
                     buttonLayout.setVisibility(View.VISIBLE);
                     flag = 0;
-                }
-                else{
+                } else {
                     titleLayout.setVisibility(View.GONE);
                     buttonLayout.setVisibility(View.GONE);
                     flag = 1;
@@ -107,10 +112,18 @@ public class ShowImageFragment extends Fragment {
                 imageView.setClickable(true);
             }
         });
+
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requireActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
+
         return view;
     }
 
-    void downloadImage(String id, final String name){
+    void downloadImage(String id, final String name) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://api.flickr.com/services/")
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
@@ -126,22 +139,22 @@ public class ShowImageFragment extends Fragment {
 
                 assert response.body() != null;
                 photo = response.body().getSizes().getSize();
-                Uri download_uri = Uri.parse(photo.get(photo.size()-1).getSource());
+                Uri download_uri = Uri.parse(photo.get(photo.size() - 1).getSource());
                 DownloadManager.Request request = new DownloadManager.Request(download_uri);
                 request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
                 request.setAllowedOverRoaming(false);
                 request.setTitle("Wall Mark");
-                request.setDescription(name +".jpg");
+                request.setDescription(name + ".jpg");
                 request.setVisibleInDownloadsUi(true);
-                request.setDestinationInExternalPublicDir("Wall Mark",  name + ".jpg");
+                request.setDestinationInExternalFilesDir(requireContext(), "/storage/emulated/0/Wall Mark", name + ".jpg");
                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                
+
                 downloadmanager.enqueue(request);
             }
 
             @Override
             public void onFailure(@NonNull Call<PhotoSize> call, @NonNull Throwable t) {
-
+                Log.e("Download Error", call.toString());
             }
         });
 

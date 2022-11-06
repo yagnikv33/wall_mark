@@ -1,15 +1,18 @@
 package com.wallmark;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.viewpager.widget.ViewPager;
+import com.google.android.material.tabs.TabLayout;
 import java.io.File;
+import java.io.FileOutputStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
 
     @BindView(R.id.toolbar)
-    android.support.v7.widget.Toolbar toolbar;
+
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId())
-        {
+        switch (item.getItemId()) {
             case R.id.search:
                 Toast.makeText(this, "Search Select", Toast.LENGTH_SHORT).show();
                 break;
@@ -66,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     private void createFolder() {
         String myfolder = Environment.getExternalStorageDirectory() + "/Wall Mark";
         File f = new File(myfolder);
+        Log.e("Created Folder:",f.getAbsolutePath());
         if (!f.exists())
             if (!f.mkdir()) {
                 Toast.makeText(this, myfolder + " can't be created.", Toast.LENGTH_SHORT).show();

@@ -1,18 +1,19 @@
 package com.wallmark;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
-
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import java.util.Timer;
 import java.util.TimerTask;
 
+@SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
 
     private static final int MY_PERMISSION_EXTERNAL_STORAGE = 9001;
@@ -37,24 +38,23 @@ public class SplashActivity extends AppCompatActivity {
                 }
             }, 800);
         }
-
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSION_EXTERNAL_STORAGE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    new Timer().schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                            finish();
-                        }
-                    }, 800);
-                } else {
-                    Toast.makeText(this, "Please Allow Storage Permission", Toast.LENGTH_SHORT).show();
-                }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == MY_PERMISSION_EXTERNAL_STORAGE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                        finish();
+                    }
+                }, 800);
+            } else {
+                Toast.makeText(this, "Please Allow Storage Permission", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 }

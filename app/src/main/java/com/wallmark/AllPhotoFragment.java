@@ -2,17 +2,18 @@ package com.wallmark;
 
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.GsonBuilder;
 
@@ -31,7 +32,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AllPhotoFragment extends Fragment{
+public class AllPhotoFragment extends Fragment {
 
     @BindView(R.id.swipeRefresh)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -58,16 +59,16 @@ public class AllPhotoFragment extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.all_photo_fragment, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
 
         recyclerView.setHasFixedSize(true);
         seriesList = new ArrayList<>();
-        myViewHolder = new AllPhotoRecyclerViewHolder(seriesList,getActivity(),"ALL_PHOTO");
+        myViewHolder = new AllPhotoRecyclerViewHolder(seriesList, getActivity(), "ALL_PHOTO");
 
         swipeRefreshLayout.setEnabled(false);
         prepareForData();
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(),3);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(myViewHolder);
@@ -76,13 +77,12 @@ public class AllPhotoFragment extends Fragment{
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                    myViewHolder.clear();
-                    progressBar.setVisibility(ProgressBar.VISIBLE);
-                    swipeRefreshLayout.setEnabled(false);
-                    prepareForData();
-                    myViewHolder.addAll(seriesList);
-                    swipeRefreshLayout.setRefreshing(false);
-
+                myViewHolder.clear();
+                progressBar.setVisibility(ProgressBar.VISIBLE);
+                swipeRefreshLayout.setEnabled(false);
+                prepareForData();
+                myViewHolder.addAll(seriesList);
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
         return view;
@@ -110,13 +110,19 @@ public class AllPhotoFragment extends Fragment{
                     String id = list.getId();
                     String secret = list.getSecret();
                     String name = list.getTitle();
-                    String url = "http://farm"+farm+".staticflickr.com/"+server+"/"+id+"_"+secret+"_b.jpg";
-                    seriesList.add(new UrlDetails(url,id,name));
+                    String url = "http://farm" + farm + ".staticflickr.com/" + server + "/" + id + "_" + secret + "_b.jpg";
+                    seriesList.add(new UrlDetails(url, id, name));
                     myViewHolder.notifyDataSetChanged();
                     progressBar.setVisibility(ProgressBar.GONE);
+
+//                    Log.e("Response:", "wallpapers name -" + name);
+//                    Log.e("Response:", "wallpapers url -" + url);
                 }
+
+
                 swipeRefreshLayout.setEnabled(true);
             }
+
             @Override
             public void onFailure(@NonNull Call<Model> call, @NonNull Throwable t) {
                 Toast.makeText(getActivity(), "Some thing Wrong! Try Again", Toast.LENGTH_SHORT).show();
