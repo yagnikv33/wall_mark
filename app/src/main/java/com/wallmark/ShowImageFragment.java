@@ -40,7 +40,7 @@ public class ShowImageFragment extends Fragment {
     @BindView(R.id.showImageView)
     ImageView imageView;
 
-    @BindView(R.id.imageView2)
+    @BindView(R.id.iv_back)
     ImageView ivBack;
 
     @BindView(R.id.download)
@@ -113,12 +113,9 @@ public class ShowImageFragment extends Fragment {
             }
         });
 
-        ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                requireActivity().getSupportFragmentManager().popBackStack();
-            }
-        });
+        ivBack.setOnClickListener(v ->
+                requireActivity().getSupportFragmentManager().popBackStack()
+        );
 
         return view;
     }

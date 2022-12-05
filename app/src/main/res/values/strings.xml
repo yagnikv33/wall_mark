@@ -2,7 +2,5 @@
     <string name="app_name">Wall Mark</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="lodingimage">lodingImage</string>
     <string name="todo">TODO</string>
 </resources>

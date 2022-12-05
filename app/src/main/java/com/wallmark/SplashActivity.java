@@ -5,11 +5,16 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.Window;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.airbnb.lottie.LottieAnimationView;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -30,13 +35,14 @@ public class SplashActivity extends AppCompatActivity {
                     MY_PERMISSION_EXTERNAL_STORAGE
             );
         } else {
+
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
                     startActivity(new Intent(SplashActivity.this, MainActivity.class));
                     finish();
                 }
-            }, 800);
+            }, 2500);
         }
     }
 

@@ -4,7 +4,7 @@ android {
     compileSdkVersion 33
     defaultConfig {
         applicationId "com.wallmark"
-        minSdkVersion 15
+        minSdkVersion 23
         multiDexEnabled true
         targetSdkVersion 33
         versionCode 1
@@ -23,7 +23,9 @@ android {
 dependencies {
     //noinspection GradleCompatible
     //api 'com.google.android.material:material:1.7.0'
-    implementation 'com.google.android.material:material:1.7.0'
+    //implementation 'com.google.android.material:material:1.7.0'
+    implementation 'com.google.android.material:material:1.8.0-alpha01'
+
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //noinspection GradleCompatible
     implementation 'androidx.appcompat:appcompat:1.0.0'
@@ -40,7 +42,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
     //noinspection GradleCompatible
-    implementation 'com.google.android.material:material:1.0.0'
+    //implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.multidex:multidex:2.0.0'
     //implementation 'com.github.bumptech.glide:glide:4.8.0'
     implementation 'com.github.bumptech.glide:glide:4.14.2'
@@ -50,7 +52,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.jakewharton:butterknife:10.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
-
+    implementation "com.airbnb.android:lottie:5.2.0"
 }
 
 apply plugin: 'com.google.gms.google-services'
