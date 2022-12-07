@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "451745337646",
+    "project_id": "wallmark-77d29",
+    "storage_bucket": "wallmark-77d29.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:451745337646:android:a38303d9d22bcca0e06abf",
+        "android_client_info": {
+          "package_name": "com.wallmark"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "451745337646-86spccje5qvef5nqtoi43473mceu31ag.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wallmark",
+            "certificate_hash": "fbf4e7c17cd6f450401088a9e4d91a2135ab58d4"
+          }
+        },
+        {
+          "client_id": "451745337646-vn3vb1b461o4lu8mkokn2o0ugagu0ocn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaghzX5hAEj9YHgwYDh49PGDro7prx21Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "451745337646-vn3vb1b461o4lu8mkokn2o0ugagu0ocn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

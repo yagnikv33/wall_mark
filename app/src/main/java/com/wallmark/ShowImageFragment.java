@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -113,9 +114,12 @@ public class ShowImageFragment extends Fragment {
             }
         });
 
-        ivBack.setOnClickListener(v ->
-                requireActivity().getSupportFragmentManager().popBackStack()
-        );
+       ivBack.setOnClickListener(v -> {
+            //do your operation here
+            // this will be called whenever user click anywhere in Fragment
+            Toast.makeText(requireContext(), "TAB TAB TAB!!!", Toast.LENGTH_SHORT).show();
+
+        });
 
         return view;
     }
